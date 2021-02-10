@@ -3,10 +3,10 @@
 
 # COMMAND ----------
 
-import os
-databricks_token = dbutils.notebook.entry_point.getDbutils().notebook().getContext().apiToken().getOrElse(None) 
-os.environ['DATABRICKS_HOST'] = 'https://e2-dogfood.staging.cloud.databricks.com/'
-os.environ['DATABRICKS_TOKEN'] = databricks_token
+#import os
+#databricks_token = dbutils.notebook.entry_point.getDbutils().notebook().getContext().apiToken().getOrElse(None) 
+#os.environ['DATABRICKS_HOST'] = 'https://e2-dogfood.staging.cloud.databricks.com/'
+#os.environ['DATABRICKS_TOKEN'] = databricks_token
 
 # COMMAND ----------
 
