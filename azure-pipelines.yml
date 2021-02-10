@@ -44,16 +44,10 @@ stages:
       displayName: 'Install dependencies'
 
     - script: |
-        echo "[DEFAULT]" >> ~/.databrickscfg
-        echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
-        echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
+        python deploy/deploy.py
       env:
         DATABRICKS_HOST: $(DATABRICKS_HOST)
         DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
-      displayName: 'Prepare profile'
-
-    - script: |
-        python deploy/deploy.py
       displayName: 'Run integration test on Databricks'
 
 
