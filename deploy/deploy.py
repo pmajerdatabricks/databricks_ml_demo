@@ -34,6 +34,11 @@ from databricks_cli.sdk import JobsService
 
 config = EnvironmentVariableConfigProvider().get_config()
 api_client = _get_api_client(config, command_name="cicdtemplates-")
+
+# Let's update our Repo to the latest git revision
+res = api_client.perform_query('PATCH','/repos/{repo_id}'.format(repo_id="3814111933528092"), {"branch":"master"})
+print(res)
+
 jobs_service = JobsService(api_client)
 
 notebook_task = {'notebook_path': notebook_path}
@@ -53,11 +58,4 @@ while True:
 
 # COMMAND ----------
 
-# MAGIC %sh ls -la
-
-# COMMAND ----------
-
-# MAGIC %sh pwd
-
-# COMMAND ----------
 
