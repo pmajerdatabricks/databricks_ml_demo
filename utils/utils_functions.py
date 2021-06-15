@@ -26,3 +26,8 @@ def timed(logger, level=None, format='%s: %s ms'):
         return inner
 
     return decorator
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Utils

@@ -35,4 +35,4 @@ os.environ["DATABRICKS_INSTANCE"] = dbutils.widgets.get("databricks-instance")
 # MAGIC %sh
 # MAGIC curl -n -X POST https://$DATABRICKS_INSTANCE/api/2.0/projects/fetch-and-checkout \
 # MAGIC     -H 'Authorization: Bearer '$ADMIN_TOKEN'' \
-# MAGIC     -d '{"path": "/Projects/piotr.majer71@gmail.com/demo", "branch": "main"}'
+# MAGIC     -d '{"path": "/Projects/piotr.majer@databricks.com/demo", "branch": "main"}'

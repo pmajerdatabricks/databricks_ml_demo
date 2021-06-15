@@ -78,7 +78,8 @@ class LendingClubDataProvider():
     def prepare_training_and_test_sets(self, df):
         X_train, X_test, Y_train, Y_test = train_test_split(df[predictors], df[target], test_size=0.3)
         return X_train, X_test, Y_train, Y_test
-
+      
+    # TODO: consider allowing for differnt splits for train job
     @timed(logger)
     def run(self):
         df = self.load_and_transform_data().toPandas()

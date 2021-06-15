@@ -7,6 +7,8 @@
 
 # COMMAND ----------
 
+# TODD: load right env for model registry param
+
 model_name = "ml-model-demo"
 env = 'dev'
 experiment_id = env_experiment_id_dict['dev']
