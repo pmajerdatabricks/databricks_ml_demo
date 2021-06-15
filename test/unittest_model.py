@@ -25,3 +25,9 @@ predictions = model.predict(X)
 roc = roc_auc_score(Y, predictions)
 
 assert roc > 0.8
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC test
