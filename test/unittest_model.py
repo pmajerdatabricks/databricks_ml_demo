@@ -30,4 +30,4 @@ assert roc > 0.8
 
 # MAGIC %md
 # MAGIC 
-# MAGIC test
+# MAGIC test2
