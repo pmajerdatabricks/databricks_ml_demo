@@ -48,7 +48,7 @@ import time
 
 from databricks_cli.configure.config import _get_api_client
 from databricks_cli.configure.provider import EnvironmentVariableConfigProvider
-from databricks_cli.sdk import JobsService
+from databricks_cli.sdk import JobsService, ReposService
 
 # Let's create Databricks CLI API client to be able to interact with Databricks REST API
 config = EnvironmentVariableConfigProvider().get_config()
