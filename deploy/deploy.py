@@ -45,6 +45,7 @@ else:
 
 import json
 import time
+from datetime import datetime
 
 from databricks_cli.configure.config import _get_api_client
 from databricks_cli.configure.provider import EnvironmentVariableConfigProvider
