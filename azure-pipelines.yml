@@ -44,7 +44,7 @@ stages:
       displayName: 'Install dependencies'
 
     - script: |
-        python deploy/deploy.py
+        python deploy/deploy.py  --branch $(Build.SourceBranchName)
       env:
         DATABRICKS_HOST: $(DATABRICKS_HOST)
         DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
