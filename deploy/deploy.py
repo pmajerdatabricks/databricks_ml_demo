@@ -36,6 +36,9 @@ namespace = p.parse_known_args()[0]
 conf_branch = namespace.branch
 if conf_branch is not None:
   branch = conf_branch
+  print('Configured branch: ', branch)
+else:
+  print('No branch was specified. Using main....')
 
 
 # COMMAND ----------
