@@ -85,10 +85,8 @@ while True:
     result_state = status["state"].get("result_state", None)
     if result_state:
         print(result_state)
-        if result_state == "SUCCESS":
-          return 0
-        else:
-          return -1
+        assert result_state == "SUCCESS"
+        break
     else:
         time.sleep(5)
 
