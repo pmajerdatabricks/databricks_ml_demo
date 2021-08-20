@@ -13,6 +13,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, roc_auc_score, mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 
+print('TEST')
 
 class LendingClubTrainingPipeline():
     def __init__(self, model_name, experiment_id):
