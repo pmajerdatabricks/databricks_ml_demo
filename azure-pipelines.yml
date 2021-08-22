@@ -45,9 +45,9 @@ stages:
     
     - script: |
         echo $(Build.SourceBranch)
-        echo $(System.PullRequests.IsFork)
-        echo $(System.PullRequests.SourceBranch)
-        echo $(System.PullRequests.SourceRepositoryURI)
+        echo $(System.PullRequest.IsFork)
+        echo $(System.PullRequest.SourceBranch)
+        echo $(System.PullRequest.SourceRepositoryURI)
 
       displayName: 'Debug'
 
