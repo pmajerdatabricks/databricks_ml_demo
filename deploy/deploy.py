@@ -30,12 +30,13 @@ branch = 'main'
 # COMMAND ----------
 
 from argparse import ArgumentParser
+import sys
 p = ArgumentParser()
 
 p.add_argument("--branch_name", required=False, type=str)
 p.add_argument("--pr_branch", required=False, type=str)
 
-namespace = p.parse_known_args()[0]
+namespace = p.parse_known_args(sys.argv + [ '', ''])[0]
 branch_name = namespace.branch_name
 print('Branch Name: ', branch_name)
 pr_branch = namespace.pr_branch
