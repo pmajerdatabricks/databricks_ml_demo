@@ -38,7 +38,7 @@ p.add_argument("--pr_branch", required=False, type=str)
 namespace = p.parse_known_args()[0]
 branch_name = namespace.branch_name
 print('Branch Name: ', branch_name)
-pr_branch = namespace.pr_name
+pr_branch = namespace.pr_branch
 print('PR Branch: ', pr_branch)
 
 # COMMAND ----------
