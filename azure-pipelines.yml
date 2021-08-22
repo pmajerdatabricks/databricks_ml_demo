@@ -42,16 +42,9 @@ stages:
         python -m pip install --upgrade pip
         pip install databricks_cli
       displayName: 'Install dependencies'
-    
-    - script: |
-        echo $(Build.SourceBranch)
-        echo $(System.PullRequest.IsFork)
-        echo $(System.PullRequest.SourceBranch)
-
-      displayName: 'Debug'
 
     - script: |
-        python deploy/deploy.py  --branch $(Build.SourceBranch)
+        python deploy/deploy.py  --branch_name $(Build.SourceBranchName) --pr_branch $(System.PullRequest.SourceBranch)
       env:
         DATABRICKS_HOST: $(DATABRICKS_HOST)
         DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
