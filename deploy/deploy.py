@@ -59,7 +59,8 @@ api_client = _get_api_client(config, command_name="cicdtemplates-")
 repos_service = ReposService(api_client)
 
 # Let's store the path for our new Repo
-repo_path = f'{repos_path_prefix}_{branch.replace('/','_')}_{str(datetime.now().microsecond)}'
+_b = branch.replace('/','_')
+repo_path = f'{repos_path_prefix}_{_b}_{str(datetime.now().microsecond)}'
 print('Checking out the following repo: ', repo_path)
 
 # Let's clone our GitHub Repo in Databricks using Repos API
