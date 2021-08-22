@@ -31,15 +31,15 @@ branch = 'main'
 
 from argparse import ArgumentParser
 p = ArgumentParser()
-p.add_argument("--branch", required=False, type=str)
-namespace = p.parse_known_args()[0]
-conf_branch = namespace.branch
-if conf_branch is not None:
-  branch = conf_branch
-  print('Configured branch: ', branch)
-else:
-  print('No branch was specified. Using main....')
 
+p.add_argument("--branch_name", required=False, type=str)
+p.add_argument("--pr_branch", required=False, type=str)
+
+namespace = p.parse_known_args()[0]
+branch_name = namespace.branch_name
+print('Branch Name: ', branch_name)
+pr_branch = namespace.pr_name
+print('PR Branch: ', pr_branch)
 
 # COMMAND ----------
 
@@ -67,7 +67,12 @@ print('Checking out the following repo: ', repo_path)
 repo = repos_service.create_repo(url=git_url, provider=provider, path=repo_path)
 
 #Let's checkout the needed branch
-repos_service.update_repo(id=repo['id'], tag=branch)
+if branch_name == 'merge':
+  branch = pr_branch
+else:
+  branch = branch_name
+  
+repos_service.update_repo(id=repo['id'], branch=branch)
 
 #Let's create a jobs service to be able to start/stop Databricks jobs
 jobs_service = JobsService(api_client)
