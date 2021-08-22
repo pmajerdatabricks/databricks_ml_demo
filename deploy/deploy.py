@@ -66,7 +66,7 @@ print('Checking out the following repo: ', repo_path)
 repo = repos_service.create_repo(url=git_url, provider=provider, path=repo_path)
 
 #Let's checkout the needed branch
-repos_service.update_repo(id=repo['id'], branch=branch)
+repos_service.update_repo(id=repo['id'], tag=branch)
 
 #Let's create a jobs service to be able to start/stop Databricks jobs
 jobs_service = JobsService(api_client)
