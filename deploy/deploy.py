@@ -30,22 +30,27 @@ branch = 'main'
 # COMMAND ----------
 
 from argparse import ArgumentParser
+import sys
 p = ArgumentParser()
-p.add_argument("--branch", required=False, type=str)
-namespace = p.parse_known_args()[0]
-conf_branch = namespace.branch
-if conf_branch is not None:
-  branch = conf_branch
 
+p.add_argument("--branch_name", required=False, type=str)
+p.add_argument("--pr_branch", required=False, type=str)
+
+namespace = p.parse_known_args(sys.argv + [ '', ''])[0]
+branch_name = namespace.branch_name
+print('Branch Name: ', branch_name)
+pr_branch = namespace.pr_branch
+print('PR Branch: ', pr_branch)
 
 # COMMAND ----------
 
 import json
 import time
+from datetime import datetime
 
 from databricks_cli.configure.config import _get_api_client
 from databricks_cli.configure.provider import EnvironmentVariableConfigProvider
-from databricks_cli.sdk import JobsService
+from databricks_cli.sdk import JobsService, ReposService
 
 # Let's create Databricks CLI API client to be able to interact with Databricks REST API
 config = EnvironmentVariableConfigProvider().get_config()
@@ -55,12 +60,19 @@ api_client = _get_api_client(config, command_name="cicdtemplates-")
 repos_service = ReposService(api_client)
 
 # Let's store the path for our new Repo
-repo_path = f'{repos_path_prefix}_{branch}_{str(datetime.now().microsecond)}'
+_b = branch.replace('/','_')
+repo_path = f'{repos_path_prefix}_{_b}_{str(datetime.now().microsecond)}'
+print('Checking out the following repo: ', repo_path)
 
 # Let's clone our GitHub Repo in Databricks using Repos API
 repo = repos_service.create_repo(url=git_url, provider=provider, path=repo_path)
 
 #Let's checkout the needed branch
+if branch_name == 'merge':
+  branch = pr_branch
+else:
+  branch = branch_name
+  
 repos_service.update_repo(id=repo['id'], branch=branch)
 
 #Let's create a jobs service to be able to start/stop Databricks jobs
@@ -82,8 +94,13 @@ while True:
     if result_state:
         print(result_state)
         assert result_state == "SUCCESS"
+        break
     else:
         time.sleep(5)
+
+# COMMAND ----------
+
+'hh/hhh/kk'.replace('/','_')
 
 # COMMAND ----------
 
