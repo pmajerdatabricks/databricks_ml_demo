@@ -56,6 +56,13 @@ from databricks_cli.sdk import JobsService, ReposService
 config = EnvironmentVariableConfigProvider().get_config()
 api_client = _get_api_client(config, command_name="cicdtemplates-")
 
+#Let's checkout the needed branch
+if branch_name == 'merge':
+  branch = pr_branch
+else:
+  branch = branch_name
+print('Using branch: ', branch)
+  
 #Let's create Repos Service
 repos_service = ReposService(api_client)
 
@@ -68,13 +75,6 @@ print('Checking out the following repo: ', repo_path)
 repo = repos_service.create_repo(url=git_url, provider=provider, path=repo_path)
 
 try:
-  #Let's checkout the needed branch
-  if branch_name == 'merge':
-    branch = pr_branch
-  else:
-    branch = branch_name
-  
-  print('Using branch: ', branch)
   repos_service.update_repo(id=repo['id'], branch=branch)
 
   #Let's create a jobs service to be able to start/stop Databricks jobs
