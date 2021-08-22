@@ -73,7 +73,8 @@ try:
     branch = pr_branch
   else:
     branch = branch_name
-
+  
+  print('Using branch: ', branch)
   repos_service.update_repo(id=repo['id'], branch=branch)
 
   #Let's create a jobs service to be able to start/stop Databricks jobs
