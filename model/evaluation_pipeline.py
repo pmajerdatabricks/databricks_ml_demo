@@ -5,6 +5,7 @@
 
 import time
 import mlflow
+import numpy as np
 import mlflow.sklearn
 from mlflow.exceptions import RestException
 from mlflow.tracking import MlflowClient
@@ -23,7 +24,7 @@ class LendingClubModelEvaluationPipeline():
 
         cand_run_ids = self.get_candidate_models()
         best_cand_roc, best_cand_run_id = self.get_best_model(cand_run_ids, X_test, Y_test)
-        print('Best ROC (candidate models): ', best_cand_roc)
+        print('Best ROC (candidate models): ', np.mean(best_cand_roc))
 
         try:
             versions = mlflow_client.get_latest_versions(self.model_name, stages=['Production'])
@@ -31,9 +32,9 @@ class LendingClubModelEvaluationPipeline():
             best_prod_roc, best_prod_run_id = self.get_best_model(prod_run_ids, X_test, Y_test)
         except RestException:
             best_prod_roc = -1
-        print('ROC (production models): ', best_prod_roc)
+        print('ROC (production models): ', np.mean(best_prod_roc))
 
-        if best_cand_roc >= best_prod_roc:
+        if np.mean(best_cand_roc >= best_prod_roc) > 0.9:
             # deploy new model
             model_version = mlflow.register_model("runs:/" + best_cand_run_id + "/model", self.model_name)
             time.sleep(5)
@@ -50,7 +51,7 @@ class LendingClubModelEvaluationPipeline():
         best_run_id = None
         for run_id in run_ids:
             roc = self.evaluate_model(run_id, X, Y)
-            if roc > best_roc:
+            if np.mean(roc > best_roc) > 0.9:
                 best_roc = roc
                 best_run_id = run_id
         return best_roc, best_run_id
@@ -66,5 +67,17 @@ class LendingClubModelEvaluationPipeline():
         model = mlflow.sklearn.load_model('runs:/{}/model'.format(run_id))
         predictions = model.predict(X)
         # acc = accuracy_score(Y, predictions)
-        roc = roc_auc_score(Y, predictions)
-        return roc
+        n = 100
+        sampled_scores = []
+        score = 0.5
+        rng = np.random.RandomState()
+        for i in range(n):
+            # sampling with replacement on the prediction indices
+            indices = rng.randint(0, len(predictions), len(predictions))
+            if len(np.unique(Y.iloc[indices])) < 2:
+                sampled_scores.append(score)
+                continue
+                
+            score = roc_auc_score(Y.iloc[indices], predictions[indices])
+            sampled_scores.append(score)
+        return np.array(sampled_scores)
