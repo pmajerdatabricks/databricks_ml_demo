@@ -1,8 +1,13 @@
 # Databricks notebook source
+
+
+# COMMAND ----------
+
 import logging
 import sys
 import functools
 import time
+import mlflow
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger(__name__)
@@ -26,6 +31,22 @@ def timed(logger, level=None, format='%s: %s ms'):
         return inner
 
     return decorator
+
+# COMMAND ----------
+
+def setup_mlflow_config(path):
+    mlflow.set_experiment(path)
+    try:
+        experiment_id = mlflow.get_experiment_by_name(
+            path
+        ).experiment_id
+        return experiment_id
+    except FileNotFoundError:
+        time.sleep(10)
+        experiment_id = mlflow.get_experiment_by_name(
+            path
+        ).experiment_id
+        return experiment_id
 
 # COMMAND ----------
 
