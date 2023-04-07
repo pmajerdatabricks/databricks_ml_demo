@@ -3,6 +3,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run  ./../utils/utils_functions
+
+# COMMAND ----------
+
 # MAGIC %run ./../data/data_transformations
 
 # COMMAND ----------
@@ -11,7 +15,7 @@
 
 model_name = "ml-model-demo"
 env = 'dev'
-experiment_id = env_experiment_id_dict['dev']
+experiment_id = setup_mlflow_config(env_experiment_id_dict['dev'])
 
 client = mlflow.tracking.MlflowClient()
 production_model = client.get_latest_versions(name = model_name, stages = ["Production"])[0]

@@ -1,0 +1,53 @@
+variables:
+- group: Databricks-environment
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - '*'
+
+  tags:
+    include:
+      - v*.*
+      - prod
+
+  paths:
+    exclude:
+      - .github/*
+      - mlruns/*
+
+stages:
+- stage: onPush
+  jobs:
+  - job: onPushJob
+    pool:
+      vmImage: 'ubuntu-18.04'
+
+    steps:
+    - script: env | sort
+      displayName: 'Environment / Context'
+
+    - task: UsePythonVersion@0
+      displayName: 'Use Python 3.7'
+      inputs:
+        versionSpec: 3.7
+
+    - checkout: self
+      persistCredentials: true
+      clean: true
+      displayName: 'Checkout & Build.Reason: $(Build.Reason) & Build.SourceBranchName: $(Build.SourceBranchName)'
+
+    - script: |
+        python -m pip install --upgrade pip
+        pip install databricks_cli
+      displayName: 'Install dependencies'
+
+    - script: |
+        python deploy/deploy.py  --branch_name $(Build.SourceBranchName) --pr_branch $(System.PullRequest.SourceBranch)
+      env:
+        DATABRICKS_HOST: $(DATABRICKS_HOST)
+        DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
+      displayName: 'Run integration test on Databricks'
+
+
